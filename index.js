@@ -4,7 +4,8 @@
 const
     express = require('express'),
     bodyParser = require('body-parser'),
-    app = express().use(bodyParser.json()); // creates express http server
+    app = express().use(bodyParser.json()), // creates express http server
+    PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 // sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening.'));
@@ -12,16 +13,21 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening.'))
 // creates the endpoint for the webhook
 // adds support for POST requests to the webhook
 app.post('/webhook', (req, res) =>{
+    // Parse the request body from the POST
     let body = req.body;
 
     // checks if this is an event from a page subscription
     if (body.object === 'page'){
+
         // iterates over each entry - there may be multiple if batched
         body.entry.forEach(function(entry) {
-            // gets the message, entry.messaging is an array, but
-            // will only ever contain one message, so we get index 0
+            // Gets the body of the webhook event
             let webhook_event = entry.messaging[0];
             console.log(webhook_event);
+
+            // Get the sender PSID
+            let sender_psid = webhook_event.sender.id;
+            console.log('Sender PSID: ' + sender_psid);
         });
 
         // returns a 'OK' response to all requests
@@ -54,3 +60,18 @@ app.get('/webhook', (req, res) => {
         }
     }
 });
+
+// Handles messages events
+function handleMessage(sender_psid, received_message) {
+
+}
+
+// Handles messaging_postbacks events
+function handlePostback(sender_psid, received_postback) {
+
+}
+
+// Sends response messages via the Send API
+function callSendAPI(sender_psid, response) {
+  
+}
