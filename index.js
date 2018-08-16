@@ -4,6 +4,7 @@
 const
     express = require('express'),
     bodyParser = require('body-parser'),
+    request = require('request');
     app = express().use(bodyParser.json()), // creates express http server
     PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -99,4 +100,18 @@ function callSendAPI(sender_psid, response) {
       },
       "message": response
   }
+
+  // Send the HTTP request to the messenger platform
+  request({
+      "uri": "https://graph.facebook.com/v3.1/me/messages",
+      "qs": { "access_token": PAGE_ACCESS_TOKEN },
+      "method": "POST",
+      "json": request_body
+  }, (err, res, body) => {
+      if (!err){
+          console.log('Message sent!')
+      } else {
+          console.error("Unable to send message:" + err);
+      }
+  });
 }
