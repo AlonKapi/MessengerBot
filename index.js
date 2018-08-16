@@ -78,10 +78,9 @@ function handleMessage(sender_psid, received_message) {
     if (received_message.text){
         // Create the payload for a basic text message
         let res_string = received_message.text
-        console.log(res_string);
-        console.log('This is the message the user sent => ${res_string}');
+        console.log('This is the message the user sent => ' + res_string);
         response = {
-            "text" : 'You sent the message: "${res_string}". Now send me an image!'
+            "text" : 'You sent the message: "' + res_string + '". Now send me an image!'
         }
     }
 
