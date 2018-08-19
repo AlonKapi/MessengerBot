@@ -47,6 +47,13 @@ app.post('/webhook', (req, res) =>{
     }
 });
 
+// Index, used for testing
+app.get('/', (req, res) =>{
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write("Add /webhook to the URL for the bot :) <br>");
+    res.end();
+});
+
 // adds support for GET requests to the webhook
 app.get('/webhook', (req, res) => {
     // verify token
