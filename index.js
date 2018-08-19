@@ -89,6 +89,34 @@ function handleMessage(sender_psid, received_message) {
         response = {
             "text" : 'You sent the message: "' + res_string + '". Now send me an image!'
         }
+    } else if (received_message.attachments){
+        // Gets the URL of the message attachment
+        let attachment_url = received_message.attachments[0].payload.url;
+        response = {
+            "attachment": {
+              "type": "template",   // type of the message, this is a template
+              "payload": {  // payload = the content of the message
+                "template_type": "generic", // template type
+                "elements": [{
+                  "title": "Is this the right picture?",
+                  "subtitle": "Tap a button to answer.",
+                  "image_url": attachment_url,
+                  "buttons": [
+                    {
+                      "type": "postback",
+                      "title": "Yes!",
+                      "payload": "yes",
+                    },
+                    {
+                      "type": "postback",
+                      "title": "No!",
+                      "payload": "no",
+                    }
+                  ],
+                }]
+              }
+            }
+        }
     }
 
     // Sends the response message
