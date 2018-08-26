@@ -11,49 +11,6 @@ const
 // sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening.'));
 
-// creates the endpoint for the webhook
-// adds support for POST requests to the webhook
-app.post('/webhook', (req, res) =>{
-    // Parse the request body from the POST
-    let body = req.body;
-
-    // checks if this is an event from a page subscription
-    if (body.object === 'page'){
-
-        // iterates over each entry - there may be multiple if batched
-        body.entry.forEach(function(entry) {
-            // Gets the body of the webhook event
-            let webhook_event = entry.messaging[0];
-            console.log(webhook_event);
-            
-            // Get the sender PSID
-            let sender_psid = webhook_event.sender.id;
-            console.log('Sender PSID: ' + sender_psid);
-
-            // Check if the event is a message or a postback and
-            // pass the event to the appropriate handler function
-            if (webhook_event.message){
-                handleMessage(sender_psid, webhook_event.message);
-            } else if (webhook_event.postback){
-                handlePostback(sender_psid, webhook_event.postback);
-            }
-        });
-
-        // returns a 'OK' response to all requests
-        res.status(200).send('EVENT_RECEIVED');
-    } else{
-        // returns a 'NOT FOUND' response if event is not from a page subscription
-        res.sendStatus(404);
-    }
-});
-
-// Index, used for testing
-app.get('/', (req, res) =>{
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write("Add /webhook to the URL for the bot :) <br>");
-    res.end();
-});
-
 // adds support for GET requests to the webhook
 app.get('/webhook', (req, res) => {
     // verify token
@@ -72,97 +29,194 @@ app.get('/webhook', (req, res) => {
             console.log('WEBHOOK_VERIFIED');
             res.status(200).send(challenge);
         } else {
+            console.error("Failed verification. Tokens don't match!");
             res.sendStatus(403);
         }
     }
 });
 
-// Handles messages events
-function handleMessage(sender_psid, received_message) {
-    let response;
+// creates the endpoint for the webhook
+// adds support for POST requests to the webhook
+app.post('/webhook', (req, res) =>{
+    // Parse the request body from the POST
+    let body = req.body;
 
-    // Check if the message contains text
-    if (received_message.text){
-        // Create the payload for a basic text message
-        let res_string = received_message.text
-        console.log('This is the message the user sent => ' + res_string);
-        response = {
-            "text" : 'You sent the message: "' + res_string + '". Now send me an image!'
-        }
-    // Check if the message contains an attachment
-    } else if (received_message.attachments){
-        // Gets the URL of the message attachment
-        let attachment_url = received_message.attachments[0].payload.url;
-        response = {
-            "attachment": {
-              "type": "template",   // type of the message, this is a template
-              "payload": {  // payload = the content of the message
-                "template_type": "generic", // template type
-                "elements": [{
-                  "title": "Is this the right picture?",
-                  "subtitle": "Tap a button to answer.",
-                  "image_url": attachment_url,
-                  "buttons": [
-                    {
-                      "type": "postback",
-                      "title": "Yes!",
-                      "payload": "yes",
-                    },
-                    {
-                      "type": "postback",
-                      "title": "No!",
-                      "payload": "no",
-                    }
-                  ],
-                }]
-              }
-            }
-        }
+    // checks if this is an event from a page subscription
+    if (body.object === 'page'){
+
+        // iterates over each entry - there may be multiple if batched
+        body.entry.forEach(function(entry) {
+            // Gets the data of the entry
+            var pageID = entry.id;
+            var timeOfEvent = entry.time;
+
+            // Iterate over each messaging event
+            entry.messaging.forEach(function(messagingEvent){
+                if (messagingEvent.optin){  // authentication
+                    handleAuthentication(messagingEvent);
+                } else if (messagingEvent.message){ // message
+                    handleMessage(messagingEvent);
+                } else if (messagingEvent.delivery){    // delivery
+                    handleDeliveryConfirmation(messagingEvent);
+                } else if (messagingEvent.postback){    // postback
+                    handlePostback(messagingEvent);
+                } else if (messagingEvent.read){    // message read
+                    handleMessageRead(messagingEvent);
+                } else{ // unknown
+                    console.log("Webhook received with unknown messaging event: ", messagingEvent);
+                }
+            });
+        });
+
+        // returns a 'OK' response to all requests, assume all went well
+        res.status(200).send('EVENT_RECEIVED');
+    }
+});
+
+// Handles authentication events
+function handleAuthentication(event){
+    var body = req.body;
+    var sender_psid = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfAuth = event.timestamp;
+
+    var passThroughParam = event.optin.ref;
+
+    console.log("Received authentication for user %d and page %d with pass " + "through param '%s' at %d", sender_psid, recipientID, passThroughParam, timeOfAuth);
+
+    // When an authentication is received, we'll send a message back to the sender
+    // to let them know it was successful.
+    sendTextMessage(senderID, "Authentication successful");
+}
+
+// Handles messages events
+function handleMessage(event) {
+    var sender_psid = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfMessage = event.timestamp;
+    var message = event.message;
+
+    var isEcho = message.is_echo;
+    var messageID = message.mid;
+    var appId = message.app_id;
+    var metadata = message.metadata;
+
+    // May receive a text or attachement but not both
+    var messageText = message.text;
+    var messageAttachments = message.attachments;
+    var quickReply = message.quick_reply;
+
+    if (isEcho){
+        // User repeated the bot, just logging the message
+        console.log("Received echo for message %s and app %d with metadata %s", messageId, appId, metadata);
+        return;
+    } else if (quickReply){
+        // Check the reply payload and address it accordingly
+        var quickReplyPayload = quickReply.payload;
+        return;
     }
 
-    // Sends the response message
-    callSendAPI(sender_psid, response);
+    if (messageText){
+        console.log("Received message for user %d and page %d at %d with message: %s", senderID, recipientID, timeOfMessage,messageText);
+        
+        switch(messageText.toLowerCase()){
+            case 'שלום':
+                sendTextMessage(sender_psid, "אהלן :)");
+                break;
+
+            default:
+                sendTextMessage(sender_psid, messageText);
+        }
+    } else if (messageAttachments){ // option to handle user attachments
+        return;
+    }
 }
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
-    let response;
+function handlePostback(event) {
+    var sender_psid = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfPostback = event.timestamp;
 
     // Get the payload for the postback
-    let payload = received_postback.payload;
+    var payload = event.postback.payload;
 
-    // Set the response based on the postback payload
-    if (payload === 'yes'){
-        response = { "text": "Great, thanks!" }
-    } else if (payload === 'no'){
-        response = { "text": "Oops, try sending another image." }
-    }
+    console.log("Received postback for user %d and page %d with payload '%s' " + "at %d", senderID, recipientID, payload, timeOfPostback);
 
-    // Send the message to acknowledge the postback
-    callSendAPI(sender_psid, response);
+    // Handle the payload
 }
 
-// Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
-  // Construct the message body
-  let request_body = {
+// Handles delivery confirmation event
+function handleDeliveryConfirmation(event){
+    var sender_psid = event.sender.id;
+    var recipientID = event.recipient.id;
+    var delivery = event.delivery;
+    var messageIDs = delivery.mids;
+    var watermark = delivery.watermark;
+    var seqNum = delivery.seq;
+
+    if (messageIDs){
+        messageIDs.forEach(function(messageID) {
+            console.log("Received delivery confirmation for message ID: %s", messageID);
+        });
+    }
+
+    console.log("All message before %d were delivered.", watermark);
+}
+
+// Handles message read event
+function handleMessageRead(event){
+    var sender_psid = event.sender.id;
+    var recipientID = event.recipient.id;
+
+    // All messages before watermark (a timestamp) or sequence have been seen.
+    var watermark = event.read.watermark;
+    var sequenceNumber = event.read.seq;
+
+    console.log("Received message read event for watermark %d and sequence " + "number %d", watermark, sequenceNumber);
+}
+
+/*
+ * Send a text message using the Send API.
+ *
+ */
+function sendTextMessage(recipientId, messageText) {
+    var messageData = {
       "recipient": {
-          "id": sender_psid
+        "id": recipientId
       },
-      "message": response
+      "message": {
+        "text": messageText,
+        "metadata": "DEVELOPER_DEFINED_METADATA"
+      }
+    };
+  
+    callSendAPI(messageData);
   }
 
-  // Send the HTTP request to the messenger platform
-  request({
-      "uri": "https://graph.facebook.com/v3.1/me/messages",
-      "qs": { "access_token": PAGE_ACCESS_TOKEN },
-      "method": "POST",
-      "json": request_body
-  }, (err, res, body) => {
-      if (!err){
-          console.log('Message sent!')
-      } else {
-          console.error("Unable to send message:" + err);
-      }
-  });
+/*
+ * Call the Send API. The message data goes in the body. If successful, we'll 
+ * get the message id in a response.
+ */
+function callSendAPI(messageData) {
+    request({
+        uri: 'https://graph.facebook.com/v3.1/me/messages',
+        qs: { access_token: PAGE_ACCESS_TOKEN },
+        method: 'POST',
+        json: messageData
+    
+      }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          var recipientId = body.recipient_id;
+          var messageId = body.message_id;
+    
+          if (messageId) {
+            console.log("Successfully sent message with id %s to recipient %s", messageId, recipientId);
+          } else {
+          console.log("Successfully called Send API for recipient %s", recipientId);
+          }
+        } else {
+          console.error("Unable to send message. :" + response.error);
+        }
+      });  
 }
