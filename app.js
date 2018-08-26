@@ -8,8 +8,17 @@ const
     app = express().use(bodyParser.json()), // creates express http server
     PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
+var isSetup = false;
 // sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening.'));
+
+// setup, run once
+app.get('/setup',function(req,res){
+    if (!isSetup){
+        setupBot(res);
+        isSetup = true;
+    }
+});
 
 // adds support for GET requests to the webhook
 app.get('/webhook', (req, res) => {
@@ -219,4 +228,28 @@ function callSendAPI(messageData) {
           console.error("Unable to send message. :" + response.error);
         }
       });  
+}
+
+function setupBot(res){
+    var messageData = {
+        "get_started":[
+            {
+                "payload":"start"
+            }
+        ]
+    };
+
+    request({
+        uri: 'https://graph.facebook.com/v3.1/me/messenger_profile',
+        qs: { access_token: PAGE_ACCESS_TOKEN },
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        form: messageData
+    }, function(err, res, body){
+        if (!error && response.statusCode == 200){
+            res.send(body);
+        } else{
+            console.error("Unable to send message. :" + response.error);
+        }
+    });
 }
