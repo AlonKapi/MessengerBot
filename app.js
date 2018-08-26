@@ -8,9 +8,6 @@ const
     app = express().use(bodyParser.json()), // creates express http server
     PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
-var welcomeMsg = '..אהלן! אני קאפי, זה הכינוי שקיבלתי בצבא, סיפור ארוך' + '\n' + '!אני שרוף על ספורט, במיוחד כדורגל וכדורסל, וכל חיי עוקב אחרי כל האירועים. טוב.. כמעט הכל' + 
-'\n' + '!אני יכול להציע לך להיעזר בי בכל הקשור למעקב אחר ענף הספורט המועדף עליך, לספק לך תמיד את כל העדכונים, התוצאות וההכרזות החמות הביותר, כדי שתמיד תישאר הכי מעודכן'
-
 // sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening.'));
 
@@ -120,11 +117,6 @@ function handleMessage(sender_psid, received_message) {
                 }]
               }
             }
-        }
-    } else { // message is empty, must be a new user
-        console.log('New User!');
-        response = {
-            "text" : welcomeMsg
         }
     }
 
