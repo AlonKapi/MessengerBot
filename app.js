@@ -86,7 +86,7 @@ function handleAuthentication(event){
 
     // When an authentication is received, we'll send a message back to the sender
     // to let them know it was successful.
-    sendTextMessage(senderID, "Authentication successful");
+    sendTextMessage(sender_psid, "Authentication successful");
 }
 
 // Handles messages events
@@ -117,7 +117,7 @@ function handleMessage(event) {
     }
 
     if (messageText){
-        console.log("Received message for user %d and page %d at %d with message: %s", senderID, recipientID, timeOfMessage,messageText);
+        console.log("Received message for user %d and page %d at %d with message: %s", sender_psid, recipientID, timeOfMessage,messageText);
         
         switch(messageText.toLowerCase()){
             case 'שלום':
@@ -141,7 +141,7 @@ function handlePostback(event) {
     // Get the payload for the postback
     var payload = event.postback.payload;
 
-    console.log("Received postback for user %d and page %d with payload '%s' " + "at %d", senderID, recipientID, payload, timeOfPostback);
+    console.log("Received postback for user %d and page %d with payload '%s' " + "at %d", sender_psid, recipientID, payload, timeOfPostback);
 
     // Handle the payload
 }
