@@ -232,19 +232,17 @@ function callSendAPI(messageData) {
 
 function setupBot(res){
     var messageData = {
-        "get_started":[
-            {
-                "payload":"start"
-            }
-        ]
+        "get_started": [{
+            "payload": "start"
+        }]
     };
 
     request({
-        uri: 'https://graph.facebook.com/v3.1/me/messenger_profile',
-        qs: { access_token: PAGE_ACCESS_TOKEN },
+        url: 'https://graph.facebook.com/v3.1/me/messenger_profile?access_token='+ PAGE_ACCESS_TOKEN,
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        form: messageData
+        json: messageData
+    
     }, function(error, response, body){
         if (!error && response.statusCode == 200){
             res.send(body);
