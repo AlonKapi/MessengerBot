@@ -155,7 +155,7 @@ function handlePostback(event) {
 
     switch(payload){
         case 'start':   // received when the user clicks on "Get Started" on first time opening the conversation
-            sendJsonMessage(sender_psid, jsoPath);
+            sendJsonMessage(sender_psid, jsonPath);
             break;
         default:
     }
