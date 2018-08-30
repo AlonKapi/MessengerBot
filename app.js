@@ -149,8 +149,16 @@ function handlePostback(event) {
 
     // Get the payload for the postback
     var payload = event.postback.payload;
+    var jsonPath = payload.toUpperCase() + ".json";
 
     console.log("Received postback for user %d and page %d with payload '%s' " + "at %d", sender_psid, recipientID, payload, timeOfPostback);
+
+    switch(payload){
+        case 'start':   // received when the user clicks on "Get Started" on first time opening the conversation
+            sendJsonMessage(sender_psid, jsoPath);
+            break;
+        default:
+    }
 
     // Handle the payload
 }
@@ -204,6 +212,23 @@ function sendTextMessage(recipientId, messageText) {
   }
 
 /*
+ * Send a premade message based on a json file
+ *
+ */
+function sendJsonMessage(recipientId, filename){
+    try{
+        filename = "./script/" + filename;
+        var json = require(filename);
+        var fullMessage = { recipient: { id: recipientId  }};
+        fullMessage.message = json;
+        callSendAPI(fullMessage);
+    }
+    catch (e){
+       console.log("error in sendJsonMessage " + e.message + " " + filename + " " + fullMessage);
+    }
+}
+
+/*
  * Call the Send API. The message data goes in the body. If successful, we'll 
  * get the message id in a response.
  */
@@ -233,7 +258,7 @@ function callSendAPI(messageData) {
 function setupBot(res){
     var messageData = {
         "get_started":{
-          "payload":"start"
+          "payload":"START"
         }
     };
 

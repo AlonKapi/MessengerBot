@@ -1,0 +1,25 @@
+{
+    "text": "שלום, אני קאפי, בלה בלה בלה, אני כרגע עוקב רק אחרי ליגת האלופות, איזה קבוצה אתה אוהד?",
+    "quick_replies": [
+        {
+            "content_type":"text",
+            "title":"Atletico",
+            "payload":"Atletico"
+        },
+        {
+            "content_type":"text",
+            "title":"Barcelona",
+            "payload":"Barcelona"
+        },
+        {
+            "content_type":"text",
+            "title":"Bayern",
+            "payload":"Bayern"
+        },
+        {
+            "content_type":"text",
+            "title":"Real Madrid",
+            "payload":"Real"
+        }
+    ]
+}
