@@ -170,7 +170,11 @@ function handlePostback(event) {
             // for now only sending the UEFA teams, later can ask here which league to follow
             sendJsonMessage(sender_psid, "UEFA1.json");
             break;
-        case 'UEFA1' || 'UEFA2' || 'UEFA3' || 'UEFA4':
+        case 'UEFA1':
+        case 'UEFA2':
+        case 'UEFA3':
+        case 'UEFA4':
+            console.log("HERE?!?!?! " + payload);
             sendJsonMessage(sender_psid, jsonPath);
             break;
         default:
