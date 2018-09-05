@@ -1,0 +1,16 @@
+{
+    "text": "בבקשה בחר בקבוצה:",
+    "quick_replies": [
+        {
+            "content_type":"text",
+            "title":"Young Boys",
+            "payload":"UEFA_Young",
+            "image_url":"https://www.futbol24.com/upload/team/Switzerland/BSC-Young-Boys.png"
+        },
+        {
+            "content_type":"text",
+            "title":"חזור להתחלה",
+            "payload":"UEFA1"
+        }
+    ]
+}

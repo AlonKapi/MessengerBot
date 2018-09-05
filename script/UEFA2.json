@@ -1,0 +1,70 @@
+{
+    "text": "בבקשה בחר בקבוצה:",
+    "quick_replies": [
+        {
+            "content_type":"text",
+            "title":"Galatasaray",
+            "payload":"UEFA_Galatasaray",
+            "image_url":"https://www.futbol24.com/upload/team/Turkey/Galatasaray-SK.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Hoffenheim",
+            "payload":"UEFA_Hoffenheim",
+            "image_url":"https://www.futbol24.com/upload/team/Germany/Hoffenheim.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Inter Milano",
+            "payload":"UEFA_Inter",
+            "image_url":"https://www.futbol24.com/upload/team/Italy/Inter-Milano.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Juventus",
+            "payload":"UEFA_Juventus",
+            "image_url":"https://www.futbol24.com/upload/team/Italy/Juventus-FC.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Liverpool",
+            "payload":"UEFA_Liverpool",
+            "image_url":"https://www.futbol24.com/upload/team/England/Liverpool-FC.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Lokomotiv Moskva",
+            "payload":"UEFA_Lokomotiv",
+            "image_url":"https://www.futbol24.com/upload/team/Russia/Lokomotiv-Moscow.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Lyon",
+            "payload":"UEFA_Lyon",
+            "image_url":"https://www.futbol24.com/upload/team/France/Lyon.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Manchester City",
+            "payload":"UEFA_ManchesterCity",
+            "image_url":"https://www.futbol24.com/upload/team/England/Manchester-City.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Manchester United",
+            "payload":"UEFA_ManchesterUnited",
+            "image_url":"https://www.futbol24.com/upload/team/England/Manchester-United.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Monaco",
+            "payload":"UEFA_Monaco",
+            "image_url":"https://www.futbol24.com/upload/team/France/AS-Monaco.png"
+        },
+        {
+            "content_type":"text",
+            "title":"עוד קבוצות",
+            "payload":"UEFA3"
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "text": "בבקשה בחר בקבוצה:",
+    "quick_replies": [
+        {
+            "content_type":"text",
+            "title":"Napoli",
+            "payload":"UEFA_Napoli",
+            "image_url":"https://www.futbol24.com/upload/team/Italy/SSC-Napoli.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Paris St. Germain",
+            "payload":"UEFA_Paris",
+            "image_url":"https://www.futbol24.com/upload/team/France/Paris-St-Germain.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Viktoria Plzen",
+            "payload":"UEFA_Viktoria",
+            "image_url":"https://www.futbol24.com/upload/team/Czech-Rep/Viktoria-Plzen.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Porto",
+            "payload":"UEFA_Porto",
+            "image_url":"https://www.futbol24.com/upload/team/Portugal/FC-Porto.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Real Madrid",
+            "payload":"UEFA_Real",
+            "image_url":"https://www.futbol24.com/upload/team/Spain/Real-Madrid.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Roma",
+            "payload":"UEFA_Roma",
+            "image_url":"https://www.futbol24.com/upload/team/Italy/AS-Roma.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Schalke",
+            "payload":"UEFA_Schalke",
+            "image_url":"https://www.futbol24.com/upload/team/Germany/Schalke-04.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Shakhtar Donetsk",
+            "payload":"UEFA_Shakhtar",
+            "image_url":"https://www.futbol24.com/upload/team/Ukraine/Shakhtar-Donetsk.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Tottenham",
+            "payload":"UEFA_Tottenham",
+            "image_url":"https://www.futbol24.com/upload/team/England/Tottenham.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Valencia",
+            "payload":"UEFA_Valencia",
+            "image_url":"https://www.futbol24.com/upload/team/Spain/Valencia-CF.png"
+        },
+        {
+            "content_type":"text",
+            "title":"עוד קבוצות",
+            "payload":"UEFA4"
+        }
+    ]
+}

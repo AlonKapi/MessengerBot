@@ -1,0 +1,70 @@
+{
+    "text": "בבקשה בחר בקבוצה:",
+    "quick_replies": [
+        {
+            "content_type":"text",
+            "title":"AEK",
+            "payload":"UEFA_AEK",
+            "image_url":"https://www.futbol24.com/upload/team/Greece/AEK-Athens.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Ajax",
+            "payload":"UEFA_Ajax",
+            "image_url":"https://www.futbol24.com/upload/team/Holland/AFC-Ajax.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Atletico",
+            "payload":"UEFA_Atletico",
+            "image_url":"https://www.futbol24.com/upload/team/Spain/Atletico-Madrid.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Barcelona",
+            "payload":"UEFA_Barcelona",
+            "image_url":"https://www.futbol24.com/upload/team/Spain/FC-Barcelona.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Bayern",
+            "payload":"UEFA_Bayern",
+            "image_url":"https://www.futbol24.com/upload/team/Germany/Bayern-Munchen.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Benfica",
+            "payload":"UEFA_Benfica",
+            "image_url":"https://www.futbol24.com/upload/team/Portugal/SL-Benfica.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Club Brugge",
+            "payload":"UEFA_Brugge",
+            "image_url":"https://www.futbol24.com/upload/team/Belgium/Club-Brugge.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Crvena zvezda",
+            "payload":"UEFA_Crvena",
+            "image_url":"https://www.futbol24.com/upload/team/Serbia/FK-Crvena-Zvezda.png"
+        },
+        {
+            "content_type":"text",
+            "title":"CSKA Moskva",
+            "payload":"UEFA_CSKA",
+            "image_url":"https://www.futbol24.com/upload/team/Russia/CSKA-Moscow.png"
+        },
+        {
+            "content_type":"text",
+            "title":"Dortmund",
+            "payload":"UEFA_Dortmund",
+            "image_url":"https://www.futbol24.com/upload/team/Germany/Borussia-Dortmund.png"
+        },
+        {
+            "content_type":"text",
+            "title":"עוד קבוצות",
+            "payload":"UEFA2"
+        }
+    ]
+}

@@ -9,6 +9,9 @@ const
     PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 var isSetup = false;
+
+const UEFA_teams = require('./script/UEFA.json');
+
 // sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening.'));
 
@@ -154,10 +157,22 @@ function handlePostback(event) {
     console.log("Received postback for user %d and page %d with payload '%s' " + "at %d", sender_psid, recipientID, payload, timeOfPostback);
 
     switch(payload){
-        case 'start':   // received when the user clicks on "Get Started" on first time opening the conversation
+        case 'start':
+            // received when the user clicks on "Get Started" on first time opening the conversation
+            sendJsonMessage(sender_psid, jsonPath);
+            break;
+        case 'continue':
+            // for now only sending the UEFA teams, later can ask here which league to follow
+            sendJsonMessage(sender_psid, "UEFA1.json");
+            break;
+        case 'UEFA1' || 'UEFA2' || 'UEFA3' || 'UEFA4':
             sendJsonMessage(sender_psid, jsonPath);
             break;
         default:
+            if (payload.contains(UEFA)){
+                var teamPicked = payload.split("_");
+                sendTextMessage(sender_psid, "מעולה! בחרת בקבוצה " + teamPicked[1]);
+            }
     }
 
     // Handle the payload
