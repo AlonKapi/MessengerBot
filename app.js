@@ -125,6 +125,7 @@ function handleMessage(event) {
     } else if (quickReply){
         // Check the reply payload and address it accordingly
         var quickReplyPayload = quickReply.payload;
+        handlePostback(event);
         return;
     }
 
@@ -151,7 +152,11 @@ function handlePostback(event) {
     var timeOfPostback = event.timestamp;
 
     // Get the payload for the postback
-    var payload = event.postback.payload;
+    var payload = ""
+    if (event.postback.payload)
+        payload = event.postback.payload;
+    else if (event.message.quick_reply.payload)
+        payload = event.message.quick_reply.payload;
     var jsonPath = payload.toUpperCase() + ".json";
 
     console.log("Received postback for user %d and page %d with payload '%s' " + "at %d", sender_psid, recipientID, payload, timeOfPostback);
