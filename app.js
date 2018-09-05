@@ -153,9 +153,9 @@ function handlePostback(event) {
 
     // Get the payload for the postback
     var payload = ""
-    if (typeof event.postback.payload !== "undefined" && event.postback.payload)
+    if (typeof event.postback !== "undefined" && event.postback.payload)
         payload = event.postback.payload;
-    else if (typeof event.message.quick_reply.payload !== "undefined" && event.message.quick_reply.payload)
+    else if (typeof event.message.quick_reply !== "undefined" && event.message.quick_reply.payload)
         payload = event.message.quick_reply.payload;
     var jsonPath = payload.toUpperCase() + ".json";
 
