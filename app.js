@@ -174,7 +174,7 @@ function handlePostback(event) {
             sendJsonMessage(sender_psid, jsonPath);
             break;
         default:
-            if (payload.contains(UEFA)){
+            if (payload.contains("UEFA")){
                 var teamPicked = payload.split("_");
                 sendTextMessage(sender_psid, "מעולה! בחרת בקבוצה " + teamPicked[1]);
             }
