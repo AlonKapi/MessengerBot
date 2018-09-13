@@ -1,6 +1,11 @@
 'use strict';
 
 // imports dependencies and set up http server
+const { Pool } = require('pg');
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+});
 const
     express = require('express'),
     bodyParser = require('body-parser'),
@@ -174,13 +179,16 @@ function handlePostback(event) {
         case 'UEFA2':
         case 'UEFA3':
         case 'UEFA4':
-            console.log("HERE?!?!?! " + payload);
             sendJsonMessage(sender_psid, jsonPath);
             break;
         default:
             if (payload.indexOf("UEFA") + 1){
                 var teamPicked = payload.split("_");
-                sendTextMessage(sender_psid, "מעולה! בחרת בקבוצה " + teamPicked[1]);
+                sendTextMessage(sender_psid, "בחרת בקבוצה " + teamPicked[1] + "!");
+                // now add the user selection to the database
+
+
+                // give the user a set of instructions on how to use the bot
             }
             else{
                 sendTextMessage(sender_psid, "שגיאה");
@@ -280,6 +288,10 @@ function callSendAPI(messageData) {
           console.error("Unable to send message. :" + response.error);
         }
       });  
+}
+
+function addUserToDB(PSID, team){
+    
 }
 
 function setupBot(res){
